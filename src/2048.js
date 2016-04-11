@@ -81,7 +81,6 @@ var Board2048 = React.createClass({
   }
 });
 
-
 var Tile2048 = React.createClass({
   render: function() {
     var colors = [ 'lightgray','orange', 'lightgreen',  'red', 'gray', 'blue', 'purple', 'brown', 'black'];
@@ -92,7 +91,6 @@ var Tile2048 = React.createClass({
       left: col * 128,
       top: row * 128,
       background: colors[colorIndex],
-
     };
     return (
       <div className="animateItem" style={style}>{this.props.value}</div>
