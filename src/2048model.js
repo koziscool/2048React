@@ -71,6 +71,8 @@ var Two048Model = {
   },
 
   moveUp: function( ) {
+    // console.log('move up');
+
     for (var col = 0; col < this.numCols; col++ ){
       values = [];
       for (var row = 0; row < this.numCols; row++ ){
@@ -114,6 +116,7 @@ var Two048Model = {
   },
 
   moveLeft: function( ) {
+    // console.log('move left');
     for (var row = 0; row < this.numRows; row++ ){
       values = [];
       for (var col = 0; col < this.numCols; col++ ){
@@ -136,6 +139,7 @@ var Two048Model = {
   },
 
   moveRight: function( ) {
+    // console.log('move right');
     for (var row = 0; row < this.numRows; row++ ){
       values = [];
       for (var col = this.numCols - 1; col >= 0; col-- ){

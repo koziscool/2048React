@@ -32,58 +32,58 @@ var Board2048 = React.createClass({
   componentWillUnmount: function() {
   },
 
-  tick: function() {
-    this.setState({current: this.state.current + 1});
-  },
+  // tick: function() {
+  //   this.setState({current: this.state.current + 1});
+  // },
 
   handleKey: function(event){
     switch (event.keyCode) {
       case 37: // Left
         Two048Model.moveLeft();
-        // console.log('left');
         break;
       case 38: // Up
         Two048Model.moveUp();
-        // console.log('up');
         break;
       case 39: // Right
         Two048Model.moveRight();
-        // console.log('right');
         break;
       case 40: // Down
         Two048Model.moveDown();
-        // console.log('down');
         break;
     }
     // this.setState(  );
 
-    for(var key in Two048Model.tiles ){
-      this.state.tiles[key] = Two048Model.tiles[key];
+    var row, col;
+    for (var i = 0; i < Two048Model.numTiles; i++) {
+      row = Math.floor( i / FOUR);
+      col = i % FOUR;
+      var value = Two048Model.getTile( row, col);
+      this.state.tiles[i] = value;
     }
     this.forceUpdate(  );
   },
 
   render: function() {
-    var children = [];
-    var row = 0;
-    var col = 0;
-    var colors = ['red', 'gray', 'blue'];
-    for (var i = 0; i < Two048Model.numTiles; i++) {
-      row = Math.floor( i / FOUR);
-      col = i % FOUR;
-      var style = {
-        left: row * 128,
-        top: col * 128,
-        background: colors[i % colors.length]
-      };
-      var value = Two048Model.getTile( row, col);
-      if( value === 'blank') {
-        value = "";
-      }
-      // console.log(value);
-      var tileKey = Two048Model.tileKey(row, col);
-      children.push(<div key={i} className="animateItem" style={style}>{value}</div>);
-    }
+    // var children = [];
+    // var row = 0;
+    // var col = 0;
+    // // var colors = ['red', 'gray', 'blue'];
+    // for (var i = 0; i < Two048Model.numTiles; i++) {
+    //   row = Math.floor( i / FOUR);
+    //   col = i % FOUR;
+    //   var style = {
+    //     left: row * 128,
+    //     top: col * 128,
+    //     background: colors[i % colors.length]
+    //   };
+    //   var value = Two048Model.getTile( row, col);
+    //   if( value === 'blank') {
+    //     value = "";
+    //   }
+    //   // console.log(value);
+    //   var tileKey = Two048Model.tileKey(row, col);
+    //   children.push(<div key={i} className="animateItem" style={style}>{value}</div>);
+    // }
     // return (
     //   React.createElement(CSSTransitionGroup,
     //         {
@@ -96,15 +96,32 @@ var Board2048 = React.createClass({
     //   );
     // );
 
+    // return (
+    //   <div>
+    //     <TileSlots2048 tiles={this.state.tiles} />
+    //   </div>
+    // );
+
     return (
       <CSSTransitionGroup
         className="animateExample"
         transitionEnterTimeout={250}
         transitionLeaveTimeout={250}
         transitionName="example" >
-        {children}
+        <TileSlots2048 tiles={this.state.tiles} />
       </CSSTransitionGroup>
     );
+
+
+    // return (
+    //   <CSSTransitionGroup
+    //     className="animateExample"
+    //     transitionEnterTimeout={250}
+    //     transitionLeaveTimeout={250}
+    //     transitionName="example" >
+    //     {children}
+    //   </CSSTransitionGroup>
+    // );
   }
 });
 
@@ -118,17 +135,26 @@ var TileSlots2048 = React.createClass({
     });
 
     return (
-      React.createElement("div", {id: "tile-list"}, 
-        slotNodes
-      )
+     <div id="board-list">
+        {slotNodes}
+      </div>
     );
   }
 });
 
 var Tile2048 = React.createClass({
   render: function() {
+    var colors = ['red', 'gray', 'blue'];
+    var row = Math.floor( this.props.index / FOUR);
+    var col = this.props.index % FOUR;
+    var style = {
+      left: row * 128,
+      top: col * 128,
+      background: colors[this.props.index % colors.length]
+    };
+
     return (
-      React.createElement("div", null, this.props.value)
+      <li className="animateItem" style={style}>{this.props.value}</li>
     );
   }
 });
