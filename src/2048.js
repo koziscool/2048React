@@ -88,8 +88,8 @@ var Tile2048 = React.createClass({
     var row = Math.floor( this.props.index / FOUR);
     var col = this.props.index % FOUR;
     var style = {
-      left: row * 128,
-      top: col * 128,
+      left: col * 128,
+      top: row * 128,
       background: colors[this.props.index % colors.length]
     };
 
