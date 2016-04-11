@@ -1,20 +1,28 @@
 
 
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
-var INTERVAL = 2000;
+// var INTERVAL = 2000;
 var FOUR = 4;
 
 var Board2048 = React.createClass({
   getInitialState: function() {
-    return {current: 0};
+    return {
+      model: Two048Model,
+      current: 0
+    };
+  },
+
+  componentWillMount: function() {
+    this.state.model.init();
   },
 
   componentDidMount: function() {
-    this.interval = setInterval(this.tick, INTERVAL);
+    console.log('init');
+    // this.interval = setInterval(this.tick, INTERVAL);
   },
 
   componentWillUnmount: function() {
-    clearInterval(this.interval);
+    // clearInterval(this.interval);
   },
 
   tick: function() {
@@ -22,14 +30,14 @@ var Board2048 = React.createClass({
   },
 
   render: function() {
-    console.log(Two048Model.numTiles);
     var children = [];
     var pos = 0;
     var row = 0;
     var col = 0;
     var colors = ['red', 'gray', 'blue'];
     // for (var i = this.state.current; i < this.state.current + colors.length; i++) {
-    for (var i = this.state.current; i < this.state.current + 16; i++) {
+    // for (var i = this.state.current; i < this.state.current + 16; i++) {
+    for (var i = 0; i < Two048Model.numTiles; i++) {
       row = Math.floor( i / FOUR);
       col = i % FOUR;
       var style = {
@@ -39,7 +47,10 @@ var Board2048 = React.createClass({
         background: colors[i % colors.length]
       };
       pos++;
-      children.push(<div key={i} className="animateItem" style={style}>{i}</div>);
+      var value = this.state.model.getTile( row, col);
+      console.log( value );
+      // children.push(<div key={i} className="animateItem" style={style}>{i}</div>);
+      children.push(<div key={i} className="animateItem" style={style}>{value}</div>);
     }
     return (
       <CSSTransitionGroup
