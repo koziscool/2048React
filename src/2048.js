@@ -49,7 +49,7 @@ var Board2048 = React.createClass({
     }
     // this.setState(  );
     this.updateTileState();
-    Two048Model.logTiles();
+    // Two048Model.logTiles();
     this.forceUpdate(  );
   },
 
@@ -94,7 +94,7 @@ var Tile2048 = React.createClass({
     };
 
     return (
-      <li className="animateItem" style={style}>{this.props.value}</li>
+      <div className="animateItem" style={style}>{this.props.value}</div>
     );
   }
 });
