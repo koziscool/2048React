@@ -83,7 +83,9 @@ var Board2048 = React.createClass({
 
 var Tile2048 = React.createClass({
   render: function() {
-    var colors = [ 'lightgray','orange', 'lightgreen',  'red', 'gray', 'blue', 'purple', 'brown', 'black'];
+    var colors = [ 'lightgray','orange', 'darkkhaki', 'firebrick', 'lightgreen', 'deepskyblue', 
+        'goldenrod', 'red', 'gray', 
+        'blue', 'purple', 'brown', 'black', 'darkyellow', 'lightblue', 'pink'];
     var row = Math.floor( this.props.index / FOUR);
     var col = this.props.index % FOUR;
     var colorIndex = Math.max( Math.floor(Math.log2( this.props.value )), 0 );
