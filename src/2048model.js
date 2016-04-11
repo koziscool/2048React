@@ -92,7 +92,7 @@ var Two048Model = {
   },
 
   moveDown: function( ) {
-    console.log('move down');
+    // console.log('move down');
     for (var col = 0; col < this.numCols; col++ ){
       values = [];
       for (var row = this.numCols  - 1; row >= 0; row-- ){

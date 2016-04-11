@@ -1,55 +1,68 @@
 
-
 var CSSTransitionGroup = React.addons.CSSTransitionGroup;
-// var INTERVAL = 2000;
 var FOUR = 4;
 
 var Board2048 = React.createClass({
   getInitialState: function() {
     return {
-      model: Two048Model,
       current: 0
     };
   },
 
   componentWillMount: function() {
-    this.state.model.init();
+    Two048Model.init();
   },
 
   componentDidMount: function() {
-    console.log('init');
-    // this.interval = setInterval(this.tick, INTERVAL);
+    window.addEventListener('keydown', this.handleKey);
   },
 
   componentWillUnmount: function() {
-    // clearInterval(this.interval);
   },
 
   tick: function() {
     this.setState({current: this.state.current + 1});
   },
 
+  handleKey: function(event){
+    switch (event.keyCode) {
+      case 37: // Left
+        Two048Model.moveLeft();
+        console.log('left');
+        break;
+      case 38: // Up
+        Two048Model.moveUp();
+        console.log('up');
+        break;
+      case 39: // Right
+        Two048Model.moveRight();
+        console.log('right');
+        break;
+      case 40: // Down
+        Two048Model.moveDown();
+        console.log('down');
+        break;
+    }
+    // this.setState(  );
+    this.forceUpdate(  );
+  },
+
   render: function() {
     var children = [];
-    var pos = 0;
     var row = 0;
     var col = 0;
     var colors = ['red', 'gray', 'blue'];
-    // for (var i = this.state.current; i < this.state.current + colors.length; i++) {
-    // for (var i = this.state.current; i < this.state.current + 16; i++) {
     for (var i = 0; i < Two048Model.numTiles; i++) {
       row = Math.floor( i / FOUR);
       col = i % FOUR;
       var style = {
-        // left: pos * 128,
         left: row * 128,
         top: col * 128,
         background: colors[i % colors.length]
       };
-      pos++;
-      var value = this.state.model.getTile( row, col);
-      console.log( value );
-      // children.push(<div key={i} className="animateItem" style={style}>{i}</div>);
+      var value = Two048Model.getTile( row, col);
+      var tileKey = Two048Model.tileKey(row, col);
+      // console.log(tileKey);
       children.push(<div key={i} className="animateItem" style={style}>{value}</div>);
     }
     return (
@@ -57,7 +70,8 @@ var Board2048 = React.createClass({
         className="animateExample"
         transitionEnterTimeout={250}
         transitionLeaveTimeout={250}
-        transitionName="example">
+        transitionName="example"
+        onKeyPress={this.handleKey}>
         {children}
       </CSSTransitionGroup>
     );
