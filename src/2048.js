@@ -6,16 +6,23 @@ var Board2048 = React.createClass({
   getInitialState: function() {
     return {
       current: 0,
-      tiles: {}
+      tiles: []
     };
   },
 
   componentWillMount: function() {
     Two048Model.init();
-    for(var key in Two048Model.tiles ){
-      this.state.tiles[key] = Two048Model.tiles[key];
+    // for(var key in Two048Model.tiles ){
+    //   this.state.tiles[key] = Two048Model.tiles[key];
+    // }
+    var row, col;
+    for (var i = 0; i < Two048Model.numTiles; i++) {
+      row = Math.floor( i / FOUR);
+      col = i % FOUR;
+      var value = Two048Model.getTile( row, col);
+      this.state.tiles[i] = value;
     }
-
+   
   },
 
   componentDidMount: function() {
@@ -77,6 +84,18 @@ var Board2048 = React.createClass({
       var tileKey = Two048Model.tileKey(row, col);
       children.push(<div key={i} className="animateItem" style={style}>{value}</div>);
     }
+    // return (
+    //   React.createElement(CSSTransitionGroup,
+    //         {
+    //           className: "animateExample",
+    //           transitionEnterTimeout: {250},
+    //           transitionLeaveTimeout: {250},
+    //           transitionName="example" >              
+    //         }, 
+    //     React.createElement(TileSlots2048, {tiles: this.state.tiles})
+    //   );
+    // );
+
     return (
       <CSSTransitionGroup
         className="animateExample"
@@ -90,57 +109,29 @@ var Board2048 = React.createClass({
 });
 
 
-// var TileSlots2048 = React.createClass({
-//   render: function() {
-//     var slotNodes = this.props.data.map(function (slots, index) {
-//       return (
-//         React.createElement(BoardSlot, {slotValue: slots, index: index})
-//       );
-//     });
+var TileSlots2048 = React.createClass({
+  render: function() {
+    var slotNodes = this.props.tiles.map(function (value, index) {
+      return (
+        React.createElement(Tile2048, {value: value, index: index})
+      );
+    });
 
-//     return (
-//       React.createElement("ul", {id: "board-list"}, 
-//         slotNodes
-//       )
-//     );
-//   }
-// });
+    return (
+      React.createElement("div", {id: "tile-list"}, 
+        slotNodes
+      )
+    );
+  }
+});
 
-// var Tile2048 = React.createClass({displayName: "BoardSlot",
-//   handleClick: function(event) {
-//     $.ajax({
-//       url: '/setMove',
-//       data: {
-//         slotId: this.props.index,
-//         playerId: PLAYERID
-//       },
-//       dataType: 'json',
-//       cache: false,
-//       success: function(data) {
-//         console.log('worked');
-//       }.bind(this),
-//       error: function(xhr, status, err) {
-//         console.log('failed');
-//       }.bind(this)
-//     });
-//   },
-//   render: function() {
-//     var displayText = "";
-
-//     switch(this.props.slotValue){
-//       case 1:
-//         displayText = "X";
-//       break;
-//       case 2:
-//         displayText = "O";
-//       break;
-//     }
-
-//     return (
-//       React.createElement("li", {onClick: this.handleClick}, displayText)
-//     );
-//   }
-// });
+var Tile2048 = React.createClass({
+  render: function() {
+    return (
+      React.createElement("div", null, this.props.value)
+    );
+  }
+});
 
 
 ReactDOM.render(
