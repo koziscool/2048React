@@ -10,19 +10,19 @@ var Board2048 = React.createClass({
     };
   },
 
-  componentWillMount: function() {
-    Two048Model.init();
-    // for(var key in Two048Model.tiles ){
-    //   this.state.tiles[key] = Two048Model.tiles[key];
-    // }
+  updateTileState: function() {
     var row, col;
     for (var i = 0; i < Two048Model.numTiles; i++) {
       row = Math.floor( i / FOUR);
       col = i % FOUR;
       var value = Two048Model.getTile( row, col);
       this.state.tiles[i] = value;
-    }
-   
+    }    
+  },
+
+  componentWillMount: function() {
+    Two048Model.init();
+    this.updateTileState();
   },
 
   componentDidMount: function() {
@@ -31,10 +31,6 @@ var Board2048 = React.createClass({
 
   componentWillUnmount: function() {
   },
-
-  // tick: function() {
-  //   this.setState({current: this.state.current + 1});
-  // },
 
   handleKey: function(event){
     switch (event.keyCode) {
@@ -52,55 +48,26 @@ var Board2048 = React.createClass({
         break;
     }
     // this.setState(  );
-
-    var row, col;
-    for (var i = 0; i < Two048Model.numTiles; i++) {
-      row = Math.floor( i / FOUR);
-      col = i % FOUR;
-      var value = Two048Model.getTile( row, col);
-      this.state.tiles[i] = value;
-    }
+    this.updateTileState();
+    Two048Model.logTiles();
     this.forceUpdate(  );
   },
 
   render: function() {
-    // var children = [];
-    // var row = 0;
-    // var col = 0;
-    // // var colors = ['red', 'gray', 'blue'];
-    // for (var i = 0; i < Two048Model.numTiles; i++) {
-    //   row = Math.floor( i / FOUR);
-    //   col = i % FOUR;
-    //   var style = {
-    //     left: row * 128,
-    //     top: col * 128,
-    //     background: colors[i % colors.length]
-    //   };
-    //   var value = Two048Model.getTile( row, col);
-    //   if( value === 'blank') {
-    //     value = "";
-    //   }
-    //   // console.log(value);
-    //   var tileKey = Two048Model.tileKey(row, col);
-    //   children.push(<div key={i} className="animateItem" style={style}>{value}</div>);
-    // }
-    // return (
-    //   React.createElement(CSSTransitionGroup,
-    //         {
-    //           className: "animateExample",
-    //           transitionEnterTimeout: {250},
-    //           transitionLeaveTimeout: {250},
-    //           transitionName="example" >              
-    //         }, 
-    //     React.createElement(TileSlots2048, {tiles: this.state.tiles})
-    //   );
-    // );
+    var children = [];
+    var row = 0;
+    var col = 0;
+    for (var i = 0; i < Two048Model.numTiles; i++) {
+      row = Math.floor( i / FOUR);
+      col = i % FOUR;
 
-    // return (
-    //   <div>
-    //     <TileSlots2048 tiles={this.state.tiles} />
-    //   </div>
-    // );
+      var value = Two048Model.getTile( row, col);
+      if( value === 'blank') {
+        value = "";
+      }
+
+      children.push(<Tile2048 key={i} index={i} value={value} className="animateItem"/>);
+    }
 
     return (
       <CSSTransitionGroup
@@ -108,39 +75,12 @@ var Board2048 = React.createClass({
         transitionEnterTimeout={250}
         transitionLeaveTimeout={250}
         transitionName="example" >
-        <TileSlots2048 tiles={this.state.tiles} />
+        {children}
       </CSSTransitionGroup>
     );
-
-
-    // return (
-    //   <CSSTransitionGroup
-    //     className="animateExample"
-    //     transitionEnterTimeout={250}
-    //     transitionLeaveTimeout={250}
-    //     transitionName="example" >
-    //     {children}
-    //   </CSSTransitionGroup>
-    // );
   }
 });
 
-
-var TileSlots2048 = React.createClass({
-  render: function() {
-    var slotNodes = this.props.tiles.map(function (value, index) {
-      return (
-        React.createElement(Tile2048, {value: value, index: index})
-      );
-    });
-
-    return (
-     <div id="board-list">
-        {slotNodes}
-      </div>
-    );
-  }
-});
 
 var Tile2048 = React.createClass({
   render: function() {

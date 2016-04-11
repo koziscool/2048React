@@ -28,6 +28,19 @@ var Two048Model = {
     return this.tiles[ this.tileKey(x, y) ];
   },
 
+  logTiles: function(){
+    var tileString = "";
+    for( var i = 0; i < this.numRows; i++ ){
+      for( var j = 0; j < this.numCols; j++ ) {
+        // square = new this.Square(i, j, 'blank');
+        tileString += this.getTile(i, j).toString() + "    ";
+      }
+      tileString += "\n";
+    }
+    console.log(tileString);
+  },
+
+
   randomNewValue: function() {
     if ( Math.random() < this.probabilityNewTwo ) {
       return '2';
